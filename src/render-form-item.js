@@ -2,8 +2,6 @@ import mixinOptionExtensions from './mixins/package-option'
 import mixinEnableWhen from './mixins/enable-when'
 import mixinHidden from './mixins/hidden'
 import {toCamelCase, isObject} from './utils'
-import {isVNode} from 'element-ui/src/utils/vdom'
-
 import _get from 'lodash.get'
 
 function validator(data) {
@@ -29,8 +27,7 @@ export default {
     itemValue: {},
     value: Object,
     disabled: Boolean,
-    options: Array,
-    extra: String | Object
+    options: Array
   },
   data() {
     return {
@@ -130,7 +127,7 @@ export default {
       this.disabled && (props.disabled = this.disabled) // 只能全局禁用, false时不处理
       const {updateForm} = this.$parent.$parent
       const {on = {}} = data
-      const formItem = h(
+      return h(
         data.component || 'el-' + elType,
         {
           attrs: props, // 用于支持placeholder等原生属性(同时造成dom上挂载一些props)
@@ -176,25 +173,6 @@ export default {
           })()
         ]
       )
-      if (typeof this.extra === 'string' || isVNode(this.extra)) {
-        return h('div', {}, [
-          formItem,
-          h(
-            'div',
-            {
-              style: {
-                color: 'rgba(0,0,0,0.45)',
-                fontSize: '14px',
-                minHeight: '22px',
-                lineHeight: 'initial'
-              }
-            },
-            [this.extra]
-          )
-        ])
-      } else {
-        return formItem
-      }
     },
 
     triggerValidate(id) {
