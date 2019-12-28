@@ -4,13 +4,35 @@
 
 ```vue
 <template>
-  <el-form-renderer :content="content" />
+  <div>
+      <el-button @click="open('ruleForm')">打开</el-button>
+      <el-dialog
+        width="30%"
+        class="dialog-collect-bankcard"
+        :before-close="close"
+        :visible="showPopu"
+        title="收集"
+        top="90px"
+        destroy-on-close
+      >
+        <el-form-renderer :content="content" />
+      </el-dialog>
+  </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    open() {
+      this.showPopu = true
+    },
+    close() {
+      this.showPopu = false
+    },
+  },
   data () {
     return {
+      showPopu: false,
       content: [
         // 只需要设置 url，即可远程配置 options
         {
